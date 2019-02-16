@@ -46,7 +46,7 @@ body {
   padding: 0;
   font-family: 'iA Writer Duospace', monospace;
   font-size: calc(0.8em + 1vw);
-  background-color: #fafafa;
+  background-color: black;
 }
 
 textarea {
@@ -72,7 +72,7 @@ textarea,
 .Controls {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100vw;
   background-color: black;
   transition: all 0.1s ease-in-out;
@@ -95,7 +95,7 @@ button {
 }
 
 button:hover {
-  background: white;
+  background: #00baff;
   color: #1f1f1f;
 }
 
