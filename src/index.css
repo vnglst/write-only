@@ -1,14 +1,112 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'iA Writer Duospace';
+  font-weight: normal;
+  font-style: normal;
+  src: url('fonts/iAWriterDuospace-Regular.eot') format('embedded-opentype'),
+    url('fonts/iAWriterDuospace-Regular.woff2') format('woff2'),
+    url('fonts/iAWriterDuospace-Regular.woff') format('woff');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+@font-face {
+  font-family: 'iA Writer Duospace';
+  font-weight: normal;
+  font-style: italic;
+  src: url('fonts/iAWriterDuospace-Italic.eot') format('embedded-opentype'),
+    url('fonts/iAWriterDuospace-Italic.woff2') format('woff2'),
+    url('fonts/iAWriterDuospace-Italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'iA Writer Duospace';
+  font-weight: bold;
+  font-style: normal;
+  src: url('fonts/iAWriterDuospace-Bold.eot') format('embedded-opentype'),
+    url('fonts/iAWriterDuospace-Bold.woff2') format('woff2'),
+    url('fonts/iAWriterDuospace-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'iA Writer Duospace';
+  font-weight: bold;
+  font-style: italic;
+  src: url('fonts/iAWriterDuospace-BoldItalic.eot') format('embedded-opentype'),
+    url('fonts/iAWriterDuospace-BoldItalic.woff2') format('woff2'),
+    url('fonts/iAWriterDuospace-BoldItalic.woff') format('woff');
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'iA Writer Duospace', monospace;
+  font-size: calc(0.8em + 1vw);
+  background-color: #fafafa;
+}
+
+textarea {
+  padding: 2em;
+  font-family: 'iA Writer Duospace';
+  font-size: 1em;
+  line-height: 1.8;
+  width: 100%;
+  height: 100vh;
+  border: none;
+  background-color: #fafafa;
+}
+
+textarea:focus {
+  outline: none; /* todo: fix a11y? */
+}
+
+textarea,
+[contenteditable] {
+  caret-color: #00baff;
+}
+
+.Controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100vw;
+  background-color: black;
+  transition: all 0.1s ease-in-out;
+  font-size: 1em;
+}
+
+button {
+  height: 3em;
+  width: 6em;
+  margin: 1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 0.5em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #000;
+  color: white;
+  transition: all 0.4s ease-in-out;
+  border: 1px solid white;
+}
+
+button:hover {
+  background: white;
+  color: #1f1f1f;
+}
+
+button:focus {
+  border: 1px solid #00baff;
+}
+
+button:disabled,
+button[disabled] {
+  border: none;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
 }
