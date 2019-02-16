@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { useUndoableReducer, UNDO, REDO } from './useUndoableReducer'
+import { INITIAL_TEXT, ABOUT_TEXT } from './texts'
 
 const UPDATE = 'update'
 const CLEAR = 'clear'
 const RESET = 'reset'
+const ABOUT = 'about'
 
 const CACHE_KEY = 'app-storage'
-const INITIAL_TEXT =
-  'Then there was the bad weather. It would come in one day when the fall was over. We would have to shut the windows in the night against the rain and the cold wind would strip the leaves from the trees in the Place Contrescarpe. The leaves lay sodden in the rain and the wind drove the rain against the big green autobus at the terminal and the Café des Amateurs was crowded and the windows misted over from the heat and the smoke inside.'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -17,6 +17,8 @@ function reducer(state, action) {
       return { text: '' }
     case RESET:
       return { text: INITIAL_TEXT }
+    case ABOUT:
+      return { text: ABOUT_TEXT }
     default:
       throw new Error(`Unknown action ${action.type}`)
   }
@@ -57,6 +59,7 @@ function App() {
         <button disabled={!canRedo} onClick={e => dispatch({ type: REDO })}>
           Redo
         </button>
+        <button onClick={e => dispatch({ type: ABOUT })}>About</button>
       </nav>
       <textarea
         autoFocus
