@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/734158f0-0ac5-4323-89be-87d4fa2d50b1/deploy-status)](https://app.netlify.com/sites/write-only/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,3 +68,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Credits
+
+- Fonts by iA: https://github.com/iaolo/iA-Fonts
+- See also: https://ia.net/writer/blog/a-typographic-christmas
