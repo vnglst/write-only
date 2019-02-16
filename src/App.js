@@ -4,55 +4,76 @@ const CACHE_KEY = 'write-only-storage'
 const INITIAL_TEXT =
   'Then there was the bad weather. It would come in one day when the fall was over. We would have to shut the windows in the night against the rain and the cold wind would strip the leaves from the trees in the Place Contrescarpe. The leaves lay sodden in the rain and the wind drove the rain against the big green autobus at the terminal and the Café des Amateurs was crowded and the windows misted over from the heat and the smoke inside.'
 
-function reducer(state, action) {
-  const { past, text, future } = state
+function undoable(reducer) {
+  // Return a reducer that handles undo and redo
+  return function(state, action) {
+    const { past, present, future } = state
+
+    switch (action.type) {
+      case 'undo':
+        const previous = past[past.length - 1]
+        const newPast = past.slice(0, past.length - 1)
+        return {
+          past: newPast,
+          present: previous,
+          future: [present, ...future]
+        }
+      case 'redo':
+        const next = future[0]
+        const newFuture = future.slice(1)
+        return {
+          past: [...past, present],
+          present: next,
+          future: newFuture
+        }
+      default:
+        // Delegate handling the action to the passed reducer
+        const newPresent = reducer(present, action)
+        if (present === newPresent) {
+          return state
+        }
+        return {
+          past: [...past, present],
+          present: newPresent,
+          future: []
+        }
+    }
+  }
+}
+
+function textReducer(state, action) {
   switch (action.type) {
     case 'update':
-      return { past: [...past, text], text: action.text, future: [] }
+      return { text: action.text }
     case 'clear':
-      return { past: [...past, text], text: '', future: [] }
+      return { text: '' }
     case 'reset':
-      return { past: [...past, text], text: INITIAL_TEXT, future: [] }
-    case 'undo': {
-      const previous = past[past.length - 1]
-      const newPast = past.slice(0, past.length - 1)
-      return {
-        past: newPast,
-        text: previous,
-        future: [text, ...future]
-      }
-    }
-    case 'redo':
-      const next = future[0]
-      const newFuture = future.slice(1)
-      return {
-        past: [...past, text],
-        text: next,
-        future: newFuture
-      }
+      return { text: INITIAL_TEXT }
     default:
-      throw new Error(`Unknown action ${action.type}`)
+      return { text: INITIAL_TEXT }
   }
 }
 
 function getInitialState() {
   const storedState = JSON.parse(window.localStorage.getItem(CACHE_KEY))
   if (storedState) return storedState
+  // Call the reducer with empty action to populate the initial state
   return {
     past: [],
-    text: INITIAL_TEXT,
+    present: textReducer(undefined, {}),
     future: []
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, getInitialState())
+  const [state, dispatch] = useReducer(undoable(textReducer), getInitialState())
   useEffect(
     () => window.localStorage.setItem(CACHE_KEY, JSON.stringify(state)),
     [state] // only save in locatstorage if state changes
   )
 
-  const { past, text, future } = state
+  const { past, present, future } = state
+  const { text } = present
 
   // selectors, derived state
   const canUndo = past.length > 0
