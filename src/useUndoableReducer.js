@@ -45,14 +45,12 @@ function undoable(reducer) {
           return state
         }
 
-        const newHistory =
-          history.length > currentIndex // if there's history beyond present
-            ? history.slice(0, currentIndex + 1) // delete it
-            : history
+        const newIndex = currentIndex + 1
+        const newHistory = history.slice(0, newIndex)
 
         return {
           history: [...newHistory, newPresent],
-          currentIndex: currentIndex + 1
+          currentIndex: newIndex
         }
     }
   }
