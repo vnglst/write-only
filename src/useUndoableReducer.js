@@ -5,53 +5,54 @@ export const UNDO = 'undo'
 
 export function useUndoableReducer(reducer, initialPresent) {
   const initialState = {
-    past: [],
-    present: initialPresent,
-    future: []
+    history: [initialPresent],
+    currentIndex: 0
   }
 
   const [state, dispatch] = useReducer(undoable(reducer), initialState)
-  const history = {
-    canUndo: state.past.length > 0,
-    canRedo: state.future.length > 0,
-    state
-  }
 
-  return [state.present, dispatch, history]
+  const { history, currentIndex } = state
+
+  const canUndo = currentIndex > 0
+  const canRedo = currentIndex < history.length - 1
+
+  return { state: history[currentIndex], dispatch, history, canUndo, canRedo }
 }
 
 function undoable(reducer) {
   // Return a reducer that handles undo and redo
   return function(state, action) {
-    const { past, present, future } = state
+    const { history, currentIndex } = state
 
     switch (action.type) {
       case UNDO:
-        const previous = past[past.length - 1]
-        const newPast = past.slice(0, past.length - 1)
         return {
-          past: newPast,
-          present: previous,
-          future: [present, ...future]
+          ...state,
+          currentIndex: currentIndex - 1
         }
       case REDO:
-        const next = future[0]
-        const newFuture = future.slice(1)
         return {
-          past: [...past, present],
-          present: next,
-          future: newFuture
+          ...state,
+          currentIndex: currentIndex + 1
         }
       default:
         // Delegate handling the action to the passed reducer
+        const present = history[currentIndex]
         const newPresent = reducer(present, action)
+
+        // Nothing's changed, don't update history
         if (present === newPresent) {
           return state
         }
+
+        const newHistory =
+          history.length > currentIndex // if there's history beyond present
+            ? history.slice(0, currentIndex + 1) // delete it
+            : history
+
         return {
-          past: [...past, present],
-          present: newPresent,
-          future: []
+          history: [...newHistory, newPresent],
+          currentIndex: currentIndex + 1
         }
     }
   }

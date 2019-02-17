@@ -33,7 +33,7 @@ function getInitialState() {
 }
 
 function App() {
-  const [state, dispatch, history] = useUndoableReducer(
+  const { state, dispatch, canUndo, canRedo } = useUndoableReducer(
     reducer,
     getInitialState()
   )
@@ -43,7 +43,6 @@ function App() {
     [state] // only save in locatstorage if state changes
   )
 
-  const { canRedo, canUndo } = history
   const { text } = state
 
   return (
